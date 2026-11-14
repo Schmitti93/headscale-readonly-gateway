@@ -1,0 +1,26 @@
+[Unit]
+Description=Headscale read-only gateway container
+After=docker.service network-online.target
+Requires=docker.service
+
+[Service]
+Type=simple
+ExecStartPre=/usr/bin/docker compose -f /etc/headscale-readonly-gateway/compose.yaml config --quiet
+ExecStart=/usr/bin/docker compose -f /etc/headscale-readonly-gateway/compose.yaml up --no-build
+ExecStop=/usr/bin/docker compose -f /etc/headscale-readonly-gateway/compose.yaml down
+Restart=on-failure
+RestartSec=5
+TimeoutStartSec=60
+TimeoutStopSec=30
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+LockPersonality=true
+
+[Install]
+WantedBy=multi-user.target

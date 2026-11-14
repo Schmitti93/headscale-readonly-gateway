@@ -1,0 +1,31 @@
+services:
+  gateway:
+    build: .
+    image: headscale-readonly-gateway:local
+    read_only: true
+    user: "65532:65532"
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=1m
+    ports:
+      - "8443:8443"
+    environment:
+      HEADSCALE_UPSTREAM_URL: "https://headscale.example.internal"
+      HEADSCALE_UPSTREAM_CA_FILE: /run/config/upstream-ca.crt
+      HEADSCALE_API_KEY_FILE: /run/secrets/headscale-api-key
+      GATEWAY_CLIENT_TOKEN_FILE: /run/secrets/client-token
+      GATEWAY_TLS_CERT_FILE: /run/config/server.crt
+      GATEWAY_TLS_KEY_FILE: /run/secrets/server.key
+      GATEWAY_BIND: 0.0.0.0
+      GATEWAY_PORT: "8443"
+      GATEWAY_MAX_RESPONSE_BYTES: "1048576"
+      GATEWAY_TIMEOUT_SECONDS: "10"
+    volumes:
+      - ./config/server.crt:/run/config/server.crt:ro
+      - ./config/upstream-ca.crt:/run/config/upstream-ca.crt:ro
+      - ./secrets/server.key:/run/secrets/server.key:ro
+      - ./secrets/headscale-api-key:/run/secrets/headscale-api-key:ro
+      - ./secrets/client-token:/run/secrets/client-token:ro
+    restart: unless-stopped

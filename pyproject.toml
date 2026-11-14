@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools==80.9.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "headscale-readonly-gateway"
+version = "1.0.0"
+description = "Authenticated read-only TLS gateway for Headscale"
+requires-python = ">=3.12"
+license = "MIT"
+
+[project.scripts]
+headscale-readonly-gateway = "headscale_readonly_gateway.gateway:main"
+
+[tool.pytest.ini_options]
+addopts = "-ra --strict-markers"
+pythonpath = ["src"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "S", "UP"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101", "S310", "S603", "S607"]
+"src/headscale_readonly_gateway/gateway.py" = ["S104", "S310"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+files = ["src"]

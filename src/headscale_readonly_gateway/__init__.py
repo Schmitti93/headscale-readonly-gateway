@@ -1,0 +1,1 @@
+"""Headscale read-only gateway."""
