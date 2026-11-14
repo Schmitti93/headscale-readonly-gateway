@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.1 - 2026-11-14
+
+- Publish immutable semantic-version container tags for release builds.
+- Add a bounded timeout to the multi-architecture container workflow.
+
 ## 1.0.0 - 2026-11-14
 
 - Initial standalone OCI gateway.
